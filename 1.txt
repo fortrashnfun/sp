@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+int main()
+{
+    int shmid;
+    int *buffer;
+    shmid = shmget(IPC_PRIVATE, sizeof(int), 0666 | IPC_CREAT);
+    buffer = (int *)shmat(shmid, NULL, 0);
+    int pid = fork();
+
+    if(pid > 0)
+    {
+        printf("Producer Process\n");
+        printf("Enter item: ");
+        scanf("%d", buffer);
+        printf("Produced: %d\n", *buffer);
+        sleep(1);
+    }
+    else
+    {
+        sleep(2);
+        printf("\nConsumer Process\n");
+        printf("Consumed: %d\n", *buffer);
+    }
+    return 0;
+}
