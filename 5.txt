@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <semaphore.h>
+
+int main()
+{
+    int buffer = 0, ch;
+
+    sem_t empty, full, mutex;
+
+    sem_init(&empty, 0, 1);
+    sem_init(&full, 0, 0);
+    sem_init(&mutex, 0, 1);
+
+    while(1)
+    {
+        printf("\n1.Produce");
+        printf("\n2.Consume");
+        printf("\n3.Exit");
+        printf("\nEnter choice: ");
+        scanf("%d", &ch);
+
+        if(ch == 1)
+        {
+            sem_wait(&empty);
+            sem_wait(&mutex);
+
+            printf("Enter item: ");
+            scanf("%d", &buffer);
+
+            printf("Produced: %d\n", buffer);
+
+            sem_post(&mutex);
+            sem_post(&full);
+        }
+
+        else if(ch == 2)
+        {
+            sem_wait(&full);
+            sem_wait(&mutex);
+
+            printf("Consumed: %d\n", buffer);
+
+            buffer = 0;
+
+            sem_post(&mutex);
+            sem_post(&empty);
+        }
+
+        else
+        {
+            break;
+        }
+    }
+
+    return 0;
+}
