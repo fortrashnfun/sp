@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+struct message
+{
+    long type;
+    int data;
+};
+
+int main()
+{
+    int msgid;
+    struct message msg;
+    msgid = msgget(IPC_PRIVATE, 0666 | IPC_CREAT);
+    int pid = fork();
+
+    if(pid > 0)
+    {
+        msg.type = 1;
+
+        printf("Producer Process\n");
+        printf("Enter item: ");
+        scanf("%d", &msg.data);
+
+        msgsnd(msgid, &msg, sizeof(msg.data), 0);
+
+        printf("Produced: %d\n", msg.data);
+        sleep(1);
+    }
+    else
+    {
+        sleep(2);
+        msgrcv(msgid, &msg, sizeof(msg.data), 1, 0);
+
+        printf("\nConsumer Process\n");
+        printf("Consumed: %d\n", msg.data);
+    }
+    return 0;
+}
