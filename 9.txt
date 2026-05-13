@@ -1,0 +1,75 @@
+#include <stdio.h>
+
+int main()
+{
+    int n, f;
+
+    // Input number of pages
+    printf("Enter number of pages: ");
+    scanf("%d", &n);
+
+    int pages[n];
+
+    // Input page reference string
+    printf("Enter pages:\n");
+
+    for(int i = 0; i < n; i++)
+        scanf("%d", &pages[i]);
+
+    // Input number of frames
+    printf("Enter number of frames: ");
+    scanf("%d", &f);
+
+    int stack[f];
+    int faults = 0;
+
+    // Initialize stack with -1
+    for(int i = 0; i < f; i++)
+        stack[i] = -1;
+
+    // Traverse all pages
+    for(int i = 0; i < n; i++)
+    {
+        int found = -1;
+
+        // Check if page already exists
+        for(int j = 0; j < f; j++)
+        {
+            if(stack[j] == pages[i])
+            {
+                found = j;
+                break;
+            }
+        }
+
+        // Page fault occurs
+        if(found == -1)
+        {
+            faults++;
+
+            // Shift stack down
+            for(int j = f - 1; j > 0; j--)
+                stack[j] = stack[j - 1];
+
+            // Insert new page at top
+            stack[0] = pages[i];
+        }
+
+        // Page already exists
+        else
+        {
+            int temp = stack[found];
+
+            // Move page to top
+            for(int j = found; j > 0; j--)
+                stack[j] = stack[j - 1];
+
+            stack[0] = temp;
+        }
+    }
+
+    // Display total page faults
+    printf("Page Faults = %d\n", faults);
+
+    return 0;
+}
