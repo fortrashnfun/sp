@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int n, head, ch;
+
+    printf("Enter number of requests: ");
+    scanf("%d", &n);
+
+    int req[n];
+
+    printf("Enter requests:\n");
+
+    for(int i = 0; i < n; i++)
+        scanf("%d", &req[i]);
+
+    printf("Enter initial head position: ");
+    scanf("%d", &head);
+
+    while(1)
+    {
+        printf("\n1.FCFS");
+        printf("\n2.SCAN");
+        printf("\n3.Exit");
+        printf("\nEnter choice: ");
+        scanf("%d", &ch);
+
+        switch(ch)
+        {
+            case 1:
+            {
+                int total = 0;
+                int pos = head;
+
+                for(int i = 0; i < n; i++)
+                {
+                    total += abs(req[i] - pos);
+                    pos = req[i];
+                }
+
+                printf("Total Head Movement = %d\n", total);
+
+                break;
+            }
+
+            case 2:
+            {
+                int total = 0;
+                int pos = head;
+
+                // Simple SCAN towards right only
+                for(int i = 0; i < n; i++)
+                {
+                    if(req[i] >= head)
+                    {
+                        total += abs(req[i] - pos);
+                        pos = req[i];
+                    }
+                }
+
+                for(int i = n - 1; i >= 0; i--)
+                {
+                    if(req[i] < head)
+                    {
+                        total += abs(req[i] - pos);
+                        pos = req[i];
+                    }
+                }
+
+                printf("Total Head Movement = %d\n", total);
+
+                break;
+            }
+
+            case 3:
+                return 0;
+
+            default:
+                printf("Invalid Choice\n");
+        }
+    }
+}
