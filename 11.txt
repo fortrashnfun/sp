@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+int main()
+{
+    int ch;
+
+    while(1)
+    {
+        printf("\n1.Paging");
+        printf("\n2.Segmentation");
+        printf("\n3.Exit");
+        printf("\nEnter choice: ");
+        scanf("%d", &ch);
+
+        switch(ch)
+        {
+            case 1:
+            {
+                int page, offset, pagesize, frame;
+
+                printf("Enter page number: ");
+                scanf("%d", &page);
+
+                printf("Enter offset: ");
+                scanf("%d", &offset);
+
+                printf("Enter page size: ");
+                scanf("%d", &pagesize);
+
+                printf("Enter frame number: ");
+                scanf("%d", &frame);
+
+                int physical = frame * pagesize + offset;
+
+                printf("Physical Address = %d\n", physical);
+
+                break;
+            }
+
+            case 2:
+            {
+                int base, offset;
+
+                printf("Enter base address: ");
+                scanf("%d", &base);
+
+                printf("Enter offset: ");
+                scanf("%d", &offset);
+
+                int physical = base + offset;
+
+                printf("Physical Address = %d\n", physical);
+
+                break;
+            }
+
+            case 3:
+                return 0;
+
+            default:
+                printf("Invalid Choice\n");
+        }
+    }
+}
